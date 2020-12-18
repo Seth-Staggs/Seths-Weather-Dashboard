@@ -1,5 +1,5 @@
 
-//Declare a variable to store the searched city
+// variable to store the searched city
 var city="";
 // variable declaration
 var searchCity = $("#search-city");
@@ -11,7 +11,7 @@ var currentHumidty= $("#humidity");
 var currentWSpeed=$("#wind-speed");
 var currentUvindex= $("#uv-index");
 var sCity=[];
-// searches the city to see if it exists in the entries from the storage
+// searches the city to see if it exists in storage
 function find(c){
     for (var i=0; i<sCity.length; i++){
         if(c.toUpperCase()===sCity[i]){
@@ -30,7 +30,7 @@ function displayWeather(event){
         currentWeather(city);
     }
 }
-// Here we create the AJAX call
+//AJAX call
 function currentWeather(city){
     // Here we build the URL so we can get a data from server side.
     var queryURL= "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + APIKey;
@@ -39,7 +39,7 @@ function currentWeather(city){
         method:"GET",
     }).then(function(response){
 
-        // parse the response to display the current weather including the City name. the Date and the weather icon. 
+        // parse the response to display the current weather including the city name. the date and the weather icon. 
         console.log(response);
         //Dta object from server side Api for icon property.
         var weathericon= response.weather[0].icon;
@@ -60,7 +60,6 @@ function currentWeather(city){
         var windsmph=(ws*2.237).toFixed(1);
         $(currentWSpeed).html(windsmph+"MPH");
         // Display UVIndex.
-        //By Geographic coordinates method and using appid and coordinates as a parameter we are going build our uv query url inside the function below.
         UVIndex(response.coord.lon,response.coord.lat);
         forecast(response.id);
         if(response.cod==200){
@@ -86,7 +85,7 @@ function currentWeather(city){
 }
     // This function returns the UVIindex response.
 function UVIndex(ln,lt){
-    //lets build the url for uvindex.
+    //url for UVIindex
     var uvqURL="https://api.openweathermap.org/data/2.5/uvi?appid="+ APIKey+"&lat="+lt+"&lon="+ln;
     $.ajax({
             url:uvqURL,
@@ -96,7 +95,7 @@ function UVIndex(ln,lt){
             });
 }
     
-// Here we display the 5 days forecast for the current city.
+//displays the 5 days forecast for the current city.
 function forecast(cityid){
     var dayover= false;
     var queryforcastURL="https://api.openweathermap.org/data/2.5/forecast?id="+cityid+"&appid="+APIKey;
@@ -122,7 +121,7 @@ function forecast(cityid){
     });
 }
 
-//Daynamically add the passed city on the search history
+//adds the passed city to the search history
 function addToList(c){
     var listEl= $("<li>"+c.toUpperCase()+"</li>");
     $(listEl).attr("class","list-group-item");
@@ -153,7 +152,7 @@ function loadlastCity(){
     }
 
 }
-//Clear the search history from the page
+//clears the search history from the page
 function clearHistory(event){
     event.preventDefault();
     sCity=[];
@@ -161,7 +160,7 @@ function clearHistory(event){
     document.location.reload();
 
 }
-//Click Handlers
+//click handlers
 $("#search-button").on("click",displayWeather);
 $(document).on("click",invokePastSearch);
 $(window).on("load",loadlastCity);
